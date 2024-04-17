@@ -46,6 +46,7 @@ const (
 	SilentTestEscalationPolicyID         = "PCGXUDY"
 	CADSilentTestEscalationPolicyID      = "PQXIBX3"
 	CADSilentTestStageEscalationPolicyID = "PBWX63A"
+	OHSSSev1ServiceID                    = "PWCZV4R"
 
 	// PagerDuty Incident Statuses
 	StatusTriggered    = "triggered"

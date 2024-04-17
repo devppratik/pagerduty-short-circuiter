@@ -64,6 +64,10 @@ func GetIncidents(c client.PagerDutyClient, opts *pdApi.ListIncidentsOptions) ([
 			incident.Assignments[0].Assignee.ID == constants.NobodySREP) {
 			continue
 		}
+		// Skip OHSS/Secondary Pages
+		if incident.Service.ID == constants.OHSSSev1ServiceID {
+			continue
+		}
 		incidents = append(incidents, incident)
 	}
 
