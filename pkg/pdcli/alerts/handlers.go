@@ -12,6 +12,11 @@ import (
 	"github.com/openshift/pagerduty-short-circuiter/pkg/utils"
 )
 
+type Note struct {
+	Content   string
+	User      string
+	CreatedAt string
+}
 type Alert struct {
 	IncidentID  string
 	AlertID     string
@@ -29,7 +34,7 @@ type Alert struct {
 	Token       string
 	Tags        string
 	WebURL      string
-	Notes       string
+	Notes       []Note
 }
 
 var (
@@ -77,7 +82,6 @@ func GetIncidentAlerts(c client.PagerDutyClient, incident pdApi.Incident) ([]Ale
 
 	// Fetch alerts related to an incident via pagerduty API
 	incidentAlerts, err := c.ListIncidentAlerts(incident.APIObject.ID)
-
 	if err != nil {
 		var aerr pdApi.APIError
 
@@ -89,7 +93,18 @@ func GetIncidentAlerts(c client.PagerDutyClient, incident pdApi.Incident) ([]Ale
 			return nil, fmt.Errorf("status code: %d, error: %s", aerr.StatusCode, err)
 		}
 	}
+	incidentNotes, err := c.ListIncidentNotes(incident.APIObject.ID)
+	if err != nil {
+		var aerr pdApi.APIError
 
+		if errors.As(err, &aerr) {
+			if aerr.RateLimited() {
+				return nil, fmt.Errorf("API rate limited")
+			}
+
+			return nil, fmt.Errorf("status code: %d, error: %s", aerr.StatusCode, err)
+		}
+	}
 	for _, alert := range incidentAlerts.Alerts {
 		status := alert.Status
 
@@ -111,7 +126,13 @@ func GetIncidentAlerts(c client.PagerDutyClient, incident pdApi.Incident) ([]Ale
 
 			TrigerredAlerts = append(TrigerredAlerts, tempAlertObj)
 		}
-
+		for _, note := range incidentNotes {
+			tempNote := Note{}
+			tempNote.Content = note.Content
+			tempNote.CreatedAt = note.CreatedAt
+			tempNote.User = note.User.Summary
+			tempAlertObj.Notes = append(tempAlertObj.Notes, tempNote)
+		}
 		alerts = append(alerts, tempAlertObj)
 	}
 
@@ -280,7 +301,14 @@ func ParseAlertMetaData(alert Alert) string {
 		data := fmt.Sprintf("* Web URL: %s\n", alert.WebURL)
 		alertData = alertData + data
 	}
-
+	if len(alert.Notes) != 0 {
+		for _, note := range alert.Notes {
+			data := "\n\n----------- Incident Notes -----------------\n"
+			data += fmt.Sprintf("* Created At: %s By %s\n", note.CreatedAt, note.User)
+			data += fmt.Sprintf("%s\n", note.Content)
+			alertData = alertData + data
+		}
+	}
 	return alertData
 }
 

@@ -27,6 +27,7 @@ import (
 type PagerDutyClient interface {
 	ListIncidents(pdApi.ListIncidentsOptions) (*pdApi.ListIncidentsResponse, error)
 	ListIncidentAlerts(incidentId string) (*pdApi.ListAlertsResponse, error)
+	ListIncidentNotes(incidentId string) ([]pdApi.IncidentNote, error)
 	GetCurrentUser(pdApi.GetCurrentUserOptions) (*pdApi.User, error)
 	GetIncidentAlert(incidentID, alertID string) (*pdApi.IncidentAlertResponse, error)
 	GetService(serviceID string, opts *pdApi.GetServiceOptions) (*pdApi.Service, error)
@@ -80,6 +81,10 @@ func (c *PDClient) ListIncidents(opts pdApi.ListIncidentsOptions) (*pdApi.ListIn
 
 func (c *PDClient) ListIncidentAlerts(incidentID string) (*pdApi.ListAlertsResponse, error) {
 	return c.PdClient.ListIncidentAlerts(incidentID)
+}
+
+func (c *PDClient) ListIncidentNotes(incidentID string) ([]pdApi.IncidentNote, error) {
+	return c.PdClient.ListIncidentNotes(incidentID)
 }
 
 func (c *PDClient) GetCurrentUser(opts pdApi.GetCurrentUserOptions) (*pdApi.User, error) {

@@ -94,6 +94,21 @@ func (mr *MockPagerDutyClientMockRecorder) ListIncidentAlerts(incidentId interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListIncidentAlerts", reflect.TypeOf((*MockPagerDutyClient)(nil).ListIncidentAlerts), incidentId)
 }
 
+// ListIncidentNotes mocks base method.
+func (m *MockPagerDutyClient) ListIncidentNotes(incidentId string) ([]pagerduty.IncidentNote, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListIncidentNotes", incidentId)
+	ret0, _ := ret[0].([]pagerduty.IncidentNote)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListIncidentNotes indicates an expected call of ListIncidentNotes.
+func (mr *MockPagerDutyClientMockRecorder) ListIncidentNotes(incidentId interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListIncidentNotes", reflect.TypeOf((*MockPagerDutyClient)(nil).ListIncidentNotes), incidentId)
+}
+
 // ListIncidents mocks base method.
 func (m *MockPagerDutyClient) ListIncidents(arg0 pagerduty.ListIncidentsOptions) (*pagerduty.ListIncidentsResponse, error) {
 	m.ctrl.T.Helper()
