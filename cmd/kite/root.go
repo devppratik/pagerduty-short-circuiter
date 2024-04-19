@@ -20,7 +20,6 @@ import (
 	"github.com/openshift/pagerduty-short-circuiter/cmd/kite/login"
 	"github.com/openshift/pagerduty-short-circuiter/cmd/kite/oncall"
 	"github.com/openshift/pagerduty-short-circuiter/cmd/kite/teams"
-	"github.com/openshift/pagerduty-short-circuiter/cmd/kite/terminal"
 
 	"github.com/spf13/cobra"
 )
@@ -44,7 +43,6 @@ func init() {
 	rootCmd.AddCommand(alerts.Cmd)
 	rootCmd.AddCommand(oncall.Cmd)
 	rootCmd.AddCommand(teams.Cmd)
-	rootCmd.AddCommand(terminal.Cmd)
 
 	//Do not provide the default completion command
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
