@@ -34,10 +34,10 @@ func (tui *TUI) SetAlertsTableEvents(alerts []pdcli.Alert) {
 		tui.Pages.AddAndSwitchToPage(AlertDataPageTitle, tui.AlertMetadata, true)
 
 		// Do not prompt for cluster login if there's no cluster ID associated with the alert (v3 clusters)
-		// if tui.ClusterID != "N/A" && tui.ClusterID != "" && alertData != "" {
-		// 	secondaryWindowText := fmt.Sprintf("Press 'Y' to log into the cluster: %s\nPress 'S' to view the SOP\nPress 'L' to view service logs", tui.ClusterName)
-		// 	tui.SecondaryWindow.SetText(secondaryWindowText).SetTextColor(PromptTextColor)
-		// }
+		if tui.ClusterID != "N/A" && tui.ClusterID != "" && alertData != "" {
+			FooterText := fmt.Sprintf("Press 'Y' to log into the cluster: %s\tPress 'S' to view the SOP\tPress 'L' to view service logs", tui.ClusterName)
+			tui.Footer.SetText(FooterText).SetTextColor(PromptTextColor)
+		}
 	})
 }
 
@@ -50,7 +50,7 @@ func (tui *TUI) SetAckTableEvents() {
 		client, _ := client.NewClient().Connect()
 		incidentID := tui.IncidentsTable.GetCell(row, 0).Text
 		incident.APIObject.ID = incidentID
-		// var clusterName string
+		var clusterName string
 		var alertData string
 
 		alerts, _ := pdcli.GetIncidentAlerts(client, incident)
@@ -59,7 +59,7 @@ func (tui *TUI) SetAckTableEvents() {
 		for _, alert := range alerts {
 			if incidentID == alert.IncidentID {
 				alertData = pdcli.ParseAlertMetaData(alert)
-				// clusterName = alert.ClusterName
+				clusterName = alert.ClusterName
 				tui.ClusterID = alert.ClusterID
 				break
 			}
@@ -76,10 +76,10 @@ func (tui *TUI) SetAckTableEvents() {
 
 		}
 		// // Do not prompt for cluster login if there's no cluster ID associated with the alert (v3 clusters)
-		// if tui.ClusterID != "N/A" && tui.ClusterID != "" && alertData != "" {
-		// 	secondaryWindowText := fmt.Sprintf("Press 'Y' to log into the cluster: %s\nPress 'S' to view the SOP\nPress 'L' to view service logs", clusterName)
-		// 	tui.SecondaryWindow.SetText(secondaryWindowText)
-		// }
+		if tui.ClusterID != "N/A" && tui.ClusterID != "" && alertData != "" {
+			FooterText := fmt.Sprintf("Press 'Y' to log into the cluster: %s\tPress 'S' to view the SOP\tPress 'L' to view service logs", clusterName)
+			tui.Footer.SetText(FooterText)
+		}
 	})
 }
 

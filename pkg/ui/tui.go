@@ -22,12 +22,11 @@ type TUI struct {
 	NextOncallTable     *tview.Table
 	AllTeamsOncallTable *tview.Table
 	Pages               *tview.Pages
-	// SecondaryWindow     *tview.TextView
-	LogWindow      *tview.TextView
-	Layout         *tview.Flex
-	Footer         *tview.TextView
-	ServiceLogView *tview.TextView
-	FrontPage      string
+	LogWindow           *tview.TextView
+	Layout              *tview.Flex
+	Footer              *tview.TextView
+	ServiceLogView      *tview.TextView
+	FrontPage           string
 
 	// API related
 	Client       client.PagerDutyClient
@@ -101,25 +100,6 @@ func (tui *TUI) InitIncidentsUI(incidents [][]string, tableTitle string, pageTit
 	}
 }
 
-// func (tui *TUI) InitAlertsSecondaryView() {
-// 	tui.SecondaryWindow.SetText(
-// 		fmt.Sprintf("Logged in user: %s\n\nViewing alerts assigned to: %s\n\nPagerDuty role: %s",
-// 			tui.Username,
-// 			tui.AssignedTo,
-// 			tui.Role)).
-// 		SetTextColor(InfoTextColor)
-// }
-
-// func (tui *TUI) InitAlertDataSecondaryView() {
-// 	var secondaryViewText string
-
-// 	PromptClusterLogin := fmt.Sprintf("Press 'Y' to log into the cluster: %s\n", tui.ClusterName)
-// 	PromptServiceLogs := "Press 'L' to view service logs"
-
-// 	secondaryViewText = PromptClusterLogin + PromptServiceLogs
-// 	tui.SecondaryWindow.SetText(secondaryViewText).SetTextColor(PromptTextColor)
-// }
-
 // TODO: Move this to new Footer + Help Combined
 // func (tui *TUI) InitOnCallSecondaryView(user string, primary string, secondary string) {
 // 	tui.SecondaryWindow.SetText(
@@ -136,14 +116,14 @@ func (t *TUI) initFooter() {
 
 	switch name {
 	case AlertsPageTitle:
-		t.Footer.SetText(FooterTextAlerts)
+		t.Footer.SetText(FooterTextAlerts).SetTextColor(PromptTextColor)
 
 	default:
-		t.Footer.SetText(FooterText)
+		t.Footer.SetText(FooterText).SetTextColor(PromptTextColor)
 	}
 
 	if strings.Contains(name, OncallPageTitle) {
-		t.Footer.SetText(FooterTextOncall)
+		t.Footer.SetText(FooterTextOncall).SetTextColor(PromptTextColor)
 	}
 }
 

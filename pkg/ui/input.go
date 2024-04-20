@@ -42,11 +42,13 @@ func (tui *TUI) initKeyboard() {
 				switch page {
 				case AlertDataPageTitle:
 					tui.Pages.SwitchToPage(tui.FrontPage)
+					tui.Footer.SetText(FooterTextAlerts)
 				case ServiceLogsPageTitle:
 					tui.Pages.SwitchToPage(AlertDataPageTitle)
 					// tui.InitAlertDataSecondaryView()
 				case AlertMetadata:
 					tui.Pages.SwitchToPage(IncidentsPageTitle)
+					tui.Footer.SetText(FooterTextAlerts)
 				case AckAlertDataPage:
 					tui.Pages.SwitchToPage(AckIncidentsPageTitle)
 				default:
@@ -222,7 +224,7 @@ func (tui *TUI) setupIncidentsPageInput() {
 				client, _ := client.NewClient().Connect()
 				incidentID := tui.IncidentsTable.GetCell(row, 0).Text
 				incident.APIObject.ID = incidentID
-				// var clusterName string
+				var clusterName string
 				var alertData string
 
 				alerts, _ := pdcli.GetIncidentAlerts(client, incident)
@@ -231,7 +233,7 @@ func (tui *TUI) setupIncidentsPageInput() {
 				for _, alert := range alerts {
 					if incidentID == alert.IncidentID {
 						alertData = pdcli.ParseAlertMetaData(alert)
-						// clusterName = alert.ClusterName
+						clusterName = alert.ClusterName
 						tui.ClusterID = alert.ClusterID
 						break
 					}
@@ -247,10 +249,10 @@ func (tui *TUI) setupIncidentsPageInput() {
 
 				}
 				// Do not prompt for cluster login if there's no cluster ID associated with the alert (v3 clusters)
-				// if tui.ClusterID != "N/A" && tui.ClusterID != "" && alertData != "" {
-				// 	secondaryWindowText := fmt.Sprintf("Press 'Y' to log into the cluster: %s\nPress 'S' to view the SOP\nPress 'L' to view service logs", clusterName)
-				// 	tui.SecondaryWindow.SetText(secondaryWindowText)
-				// }
+				if tui.ClusterID != "N/A" && tui.ClusterID != "" && alertData != "" {
+					FooterText := fmt.Sprintf("Press 'Y' to log into the cluster: %s\tPress 'S' to view the SOP\tPress 'L' to view service logs", clusterName)
+					tui.Footer.SetText(FooterText)
+				}
 			}
 			return event
 		})
