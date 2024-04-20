@@ -22,12 +22,12 @@ type TUI struct {
 	NextOncallTable     *tview.Table
 	AllTeamsOncallTable *tview.Table
 	Pages               *tview.Pages
-	SecondaryWindow     *tview.TextView
-	LogWindow           *tview.TextView
-	Layout              *tview.Flex
-	Footer              *tview.TextView
-	ServiceLogView      *tview.TextView
-	FrontPage           string
+	// SecondaryWindow     *tview.TextView
+	LogWindow      *tview.TextView
+	Layout         *tview.Flex
+	Footer         *tview.TextView
+	ServiceLogView *tview.TextView
+	FrontPage      string
 
 	// API related
 	Client       client.PagerDutyClient
@@ -101,33 +101,34 @@ func (tui *TUI) InitIncidentsUI(incidents [][]string, tableTitle string, pageTit
 	}
 }
 
-func (tui *TUI) InitAlertsSecondaryView() {
-	tui.SecondaryWindow.SetText(
-		fmt.Sprintf("Logged in user: %s\n\nViewing alerts assigned to: %s\n\nPagerDuty role: %s",
-			tui.Username,
-			tui.AssignedTo,
-			tui.Role)).
-		SetTextColor(InfoTextColor)
-}
+// func (tui *TUI) InitAlertsSecondaryView() {
+// 	tui.SecondaryWindow.SetText(
+// 		fmt.Sprintf("Logged in user: %s\n\nViewing alerts assigned to: %s\n\nPagerDuty role: %s",
+// 			tui.Username,
+// 			tui.AssignedTo,
+// 			tui.Role)).
+// 		SetTextColor(InfoTextColor)
+// }
 
-func (tui *TUI) InitAlertDataSecondaryView() {
-	var secondaryViewText string
+// func (tui *TUI) InitAlertDataSecondaryView() {
+// 	var secondaryViewText string
 
-	PromptClusterLogin := fmt.Sprintf("Press 'Y' to log into the cluster: %s\n", tui.ClusterName)
-	PromptServiceLogs := "Press 'L' to view service logs"
+// 	PromptClusterLogin := fmt.Sprintf("Press 'Y' to log into the cluster: %s\n", tui.ClusterName)
+// 	PromptServiceLogs := "Press 'L' to view service logs"
 
-	secondaryViewText = PromptClusterLogin + PromptServiceLogs
-	tui.SecondaryWindow.SetText(secondaryViewText).SetTextColor(PromptTextColor)
-}
+// 	secondaryViewText = PromptClusterLogin + PromptServiceLogs
+// 	tui.SecondaryWindow.SetText(secondaryViewText).SetTextColor(PromptTextColor)
+// }
 
-func (tui *TUI) InitOnCallSecondaryView(user string, primary string, secondary string) {
-	tui.SecondaryWindow.SetText(
-		fmt.Sprintf("Logged in user: %s\nCurrent Primary on-call: %s\nCurrent Secondary on-call: %s",
-			user,
-			primary,
-			secondary),
-	)
-}
+// TODO: Move this to new Footer + Help Combined
+// func (tui *TUI) InitOnCallSecondaryView(user string, primary string, secondary string) {
+// 	tui.SecondaryWindow.SetText(
+// 		fmt.Sprintf("Logged in user: %s\nCurrent Primary on-call: %s\nCurrent Secondary on-call: %s",
+// 			user,
+// 			primary,
+// 			secondary),
+// 	)
+// }
 
 // initFooter initializes the footer text depending on the page currently visible.
 func (t *TUI) initFooter() {
@@ -150,7 +151,6 @@ func (t *TUI) initFooter() {
 func (tui *TUI) Init() {
 	tui.App = tview.NewApplication()
 	tui.Pages = tview.NewPages()
-	tui.SecondaryWindow = tview.NewTextView()
 	tui.LogWindow = tview.NewTextView()
 	tui.Footer = tview.NewTextView()
 	tui.AlertMetadata = tview.NewTextView()
@@ -165,16 +165,6 @@ func (tui *TUI) Init() {
 		SetChangedFunc(func() {
 			tui.App.Draw()
 		})
-
-	tui.SecondaryWindow.
-		SetChangedFunc(func() { tui.App.Draw() }).
-		SetTextColor(InfoTextColor).
-		SetScrollable(true).
-		ScrollToEnd().
-		SetBorder(true).
-		SetBorderColor(BorderColor).
-		SetBorderAttributes(tcell.AttrDim).
-		SetBorderPadding(1, 1, 1, 1)
 
 	tui.LogWindow.
 		SetChangedFunc(func() { tui.App.Draw() }).
@@ -218,7 +208,6 @@ func (tui *TUI) Init() {
 		AddItem(tui.Pages, 0, 6, true).
 		AddItem(
 			tview.NewFlex().SetDirection(tview.FlexColumn).
-				AddItem(tui.SecondaryWindow, 0, 1, false).
 				AddItem(tui.LogWindow, 0, 2, false),
 			0, 2, false).
 		AddItem(tui.Footer, 0, 1, false)

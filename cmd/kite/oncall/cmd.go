@@ -15,7 +15,6 @@ package oncall
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/PagerDuty/go-pagerduty"
 	"github.com/openshift/pagerduty-short-circuiter/pkg/client"
@@ -39,9 +38,9 @@ func oncallHandler(cmd *cobra.Command, args []string) (err error) {
 		onCallLayers   []pdcli.OncallLayer
 		allTeamsOncall []pdcli.OncallUser
 		nextOncall     []pdcli.OncallUser
-		primary        string
-		secondary      string
-		tui            ui.TUI
+		// primary        string
+		// secondary      string
+		tui ui.TUI
 	)
 
 	// Initialize TUI
@@ -74,15 +73,15 @@ func oncallHandler(cmd *cobra.Command, args []string) (err error) {
 		return err
 	}
 
-	for _, v := range onCallLayers[2].Users {
-		if strings.Contains(v.OncallRole, "Primary") {
-			primary = v.Name
-		}
+	// for _, v := range onCallLayers[2].Users {
+	// 	if strings.Contains(v.OncallRole, "Primary") {
+	// 		primary = v.Name
+	// 	}
 
-		if strings.Contains(v.OncallRole, "Secondary") {
-			secondary = v.Name
-		}
-	}
+	// 	if strings.Contains(v.OncallRole, "Secondary") {
+	// 		secondary = v.Name
+	// 	}
+	// }
 
 	// Fetch oncall data from all teams
 	utils.InfoLogger.Print("GET: fetching on-call data of all teams")
@@ -112,8 +111,8 @@ func oncallHandler(cmd *cobra.Command, args []string) (err error) {
 	utils.InfoLogger.Print("Initializing next on-call schedule view")
 	initNextOncallUI(&tui, nextOncall)
 
-	utils.InfoLogger.Print("Initializing secondary view")
-	tui.InitOnCallSecondaryView(user.Name, primary, secondary)
+	// utils.InfoLogger.Print("Initializing secondary view")
+	// tui.InitOnCallSecondaryView(user.Name, primary, secondary)
 
 	err = tui.StartApp()
 

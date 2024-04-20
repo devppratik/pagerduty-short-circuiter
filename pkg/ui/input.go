@@ -35,7 +35,7 @@ func (tui *TUI) initKeyboard() {
 		if event.Key() == tcell.KeyEscape {
 			// Check if alerts command is executed
 			if tui.Pages.HasPage(AlertsPageTitle) {
-				tui.InitAlertsSecondaryView()
+				// tui.InitAlertsSecondaryView()
 				page, _ := tui.Pages.GetFrontPage()
 
 				// Handle page traversal
@@ -44,7 +44,7 @@ func (tui *TUI) initKeyboard() {
 					tui.Pages.SwitchToPage(tui.FrontPage)
 				case ServiceLogsPageTitle:
 					tui.Pages.SwitchToPage(AlertDataPageTitle)
-					tui.InitAlertDataSecondaryView()
+					// tui.InitAlertDataSecondaryView()
 				case AlertMetadata:
 					tui.Pages.SwitchToPage(IncidentsPageTitle)
 				case AckAlertDataPage:
@@ -222,7 +222,7 @@ func (tui *TUI) setupIncidentsPageInput() {
 				client, _ := client.NewClient().Connect()
 				incidentID := tui.IncidentsTable.GetCell(row, 0).Text
 				incident.APIObject.ID = incidentID
-				var clusterName string
+				// var clusterName string
 				var alertData string
 
 				alerts, _ := pdcli.GetIncidentAlerts(client, incident)
@@ -231,7 +231,7 @@ func (tui *TUI) setupIncidentsPageInput() {
 				for _, alert := range alerts {
 					if incidentID == alert.IncidentID {
 						alertData = pdcli.ParseAlertMetaData(alert)
-						clusterName = alert.ClusterName
+						// clusterName = alert.ClusterName
 						tui.ClusterID = alert.ClusterID
 						break
 					}
@@ -247,10 +247,10 @@ func (tui *TUI) setupIncidentsPageInput() {
 
 				}
 				// Do not prompt for cluster login if there's no cluster ID associated with the alert (v3 clusters)
-				if tui.ClusterID != "N/A" && tui.ClusterID != "" && alertData != "" {
-					secondaryWindowText := fmt.Sprintf("Press 'Y' to log into the cluster: %s\nPress 'S' to view the SOP\nPress 'L' to view service logs", clusterName)
-					tui.SecondaryWindow.SetText(secondaryWindowText)
-				}
+				// if tui.ClusterID != "N/A" && tui.ClusterID != "" && alertData != "" {
+				// 	secondaryWindowText := fmt.Sprintf("Press 'Y' to log into the cluster: %s\nPress 'S' to view the SOP\nPress 'L' to view service logs", clusterName)
+				// 	tui.SecondaryWindow.SetText(secondaryWindowText)
+				// }
 			}
 			return event
 		})

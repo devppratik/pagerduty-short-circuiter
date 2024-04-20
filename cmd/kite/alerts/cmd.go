@@ -81,7 +81,7 @@ func alertsHandler(cmd *cobra.Command, args []string) error {
 		//UI
 		tui ui.TUI
 	)
-
+	fmt.Println("Initialzing Kite ...")
 	// Setup TUI
 	tui.Init()
 	utils.InfoLogger.Print("Initialized terminal UI")
@@ -113,8 +113,7 @@ func alertsHandler(cmd *cobra.Command, args []string) error {
 	tui.Client = client
 	tui.Username = user.Name
 	tui.Columns = options.columns
-	tui.Role = user.Role
-
+	fmt.Println("Logged into PD as", user.Name, " with role", user.Role, " ...")
 	// Check for incident ID argument
 	if len(args) > 0 {
 		incidentID = strings.TrimSpace(args[0])
@@ -237,8 +236,9 @@ func alertsHandler(cmd *cobra.Command, args []string) error {
 	tui.IncidentOpts = incidentOpts
 
 	tui.InitAlertsUI(tui.Alerts, ui.AlertsTableTitle, ui.AlertsPageTitle)
-	tui.InitAlertsSecondaryView()
+	// tui.InitAlertsSecondaryView()
 	// Start TUI
+	fmt.Println("Starting UI...")
 	err = tui.StartApp()
 
 	if err != nil {
