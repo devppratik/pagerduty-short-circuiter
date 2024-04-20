@@ -35,7 +35,7 @@ func (tui *TUI) SetAlertsTableEvents(alerts []pdcli.Alert) {
 
 		// Do not prompt for cluster login if there's no cluster ID associated with the alert (v3 clusters)
 		if tui.ClusterID != "N/A" && tui.ClusterID != "" && alertData != "" {
-			FooterText := fmt.Sprintf("Press 'Y' to log into the cluster: %s\tPress 'S' to view the SOP\tPress 'L' to view service logs", tui.ClusterName)
+			FooterText := fmt.Sprintf("Press 'Y' to log into the cluster: %s | Press 'S' to view the SOP | Press 'L' to view service logs | [Esc] Go Back", tui.ClusterName)
 			tui.Footer.SetText(FooterText).SetTextColor(PromptTextColor)
 		}
 	})
@@ -75,9 +75,9 @@ func (tui *TUI) SetAckTableEvents() {
 			tui.InitAlertsUI(alerts, AckAlertDataPage, AckAlertDataPage)
 
 		}
-		// // Do not prompt for cluster login if there's no cluster ID associated with the alert (v3 clusters)
+		// Do not prompt for cluster login if there's no cluster ID associated with the alert (v3 clusters)
 		if tui.ClusterID != "N/A" && tui.ClusterID != "" && alertData != "" {
-			FooterText := fmt.Sprintf("Press 'Y' to log into the cluster: %s\tPress 'S' to view the SOP\tPress 'L' to view service logs", clusterName)
+			FooterText := fmt.Sprintf("Press 'Y' to log into the cluster: %s | Press 'S' to view the SOP | Press 'L' to view service logs | [Esc] Go Back", clusterName)
 			tui.Footer.SetText(FooterText)
 		}
 	})
