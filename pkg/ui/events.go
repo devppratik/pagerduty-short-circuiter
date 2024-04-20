@@ -156,3 +156,7 @@ func (tui *TUI) fetchClusterServiceLogs() {
 	tui.ServiceLogView.SetText(responseStr)
 	tui.Pages.AddAndSwitchToPage(ServiceLogsPageTitle, tui.ServiceLogView, true)
 }
+
+func (tui *TUI) fetchKiteLogs() {
+	tui.Pages.AddAndSwitchToPage(KiteLogsPageTitle, tui.LogWindow, true)
+}

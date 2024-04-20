@@ -153,7 +153,8 @@ func (tui *TUI) Init() {
 		SetBorder(true).
 		SetBorderColor(BorderColor).
 		SetBorderAttributes(tcell.AttrDim).
-		SetBorderPadding(0, 0, 1, 1)
+		SetBorderPadding(0, 0, 1, 1).
+		SetTitle(fmt.Sprintf(TitleFmt, KiteLogsTableTitle))
 
 	tui.Footer.
 		SetTextAlign(tview.AlignLeft).
@@ -185,11 +186,7 @@ func (tui *TUI) Init() {
 	// Create the main layout
 	tui.Layout = tview.NewFlex().
 		SetDirection(tview.FlexRow).
-		AddItem(tui.Pages, 0, 6, true).
-		AddItem(
-			tview.NewFlex().SetDirection(tview.FlexColumn).
-				AddItem(tui.LogWindow, 0, 2, false),
-			0, 2, false).
+		AddItem(tui.Pages, 0, 9, true).
 		AddItem(tui.Footer, 0, 1, false)
 
 	kiteTab := InitKiteTab(tui, tui.Layout)

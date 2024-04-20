@@ -18,6 +18,7 @@ const (
 	OncallTableTitle          = "ONCALL"
 	NextOncallTableTitle      = "[ NEXT ONCALL ]"
 	AllTeamsOncallTableTitle  = "[ ALL TEAMS ONCALL ]"
+	KiteLogsTableTitle        = "[ KITE LOGS ]"
 
 	// Page Titles
 	AlertsPageTitle          = "Alerts"
@@ -33,6 +34,7 @@ const (
 	NextOncallPageTitle      = "Next Oncall"
 	AllTeamsOncallPageTitle  = "All Teams Oncall"
 	ServiceLogsPageTitle     = "Service Logs"
+	KiteLogsPageTitle        = "Kite Logs"
 
 	//Footer
 	FooterText                = "[Esc] Go Back"

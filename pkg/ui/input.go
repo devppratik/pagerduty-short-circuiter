@@ -197,6 +197,13 @@ func (tui *TUI) setupAlertsPageInput() {
 				utils.InfoLogger.Print("Refreshing alerts...")
 				tui.SeedAlertsUI()
 			}
+
+			// Alerts refresh
+			if event.Rune() == 'l' || event.Rune() == 'L' {
+				utils.InfoLogger.Print("Switching to Logs...")
+				tui.fetchKiteLogs()
+			}
+
 			return event
 		})
 	}
