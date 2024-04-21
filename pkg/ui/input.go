@@ -34,7 +34,7 @@ func (tui *TUI) initKeyboard() {
 		}
 		if event.Key() == tcell.KeyEscape {
 			// Check if alerts command is executed
-			if tui.Pages.HasPage(AlertsPageTitle) {
+			if tui.Pages.HasPage(AckIncidentsPageTitle) {
 				// tui.InitAlertsSecondaryView()
 				page, _ := tui.Pages.GetFrontPage()
 
@@ -52,9 +52,9 @@ func (tui *TUI) initKeyboard() {
 				case AckAlertDataPage:
 					tui.Pages.SwitchToPage(AckIncidentsPageTitle)
 				default:
-					tui.InitAlertsUI(tui.Alerts, AlertsTableTitle, AlertsPageTitle)
-					tui.Pages.SwitchToPage(AlertsPageTitle)
-					tui.Footer.SetText(FooterTextAlerts)
+					// tui.InitAlertsUI(tui.Alerts, AlertsTableTitle, AlertsPageTitle)
+					tui.Pages.SwitchToPage(AckIncidentsPageTitle)
+					tui.Footer.SetText(FooterTextAckIncidents)
 				}
 			}
 			// Check if oncall command is executed
@@ -166,20 +166,9 @@ func (tui *TUI) initKeyboard() {
 }
 
 func (tui *TUI) setupAlertsPageInput() {
-	if title, _ := tui.Pages.GetFrontPage(); title == AlertsPageTitle {
+	if title, _ := tui.Pages.GetFrontPage(); title == AckIncidentsPageTitle {
 
 		tui.Pages.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
-
-			if event.Rune() == '1' {
-				utils.InfoLogger.Print("Switching to acknowledged incidents view")
-				tui.SeedAckIncidentsUI()
-
-				if len(tui.Incidents) == 0 {
-					utils.InfoLogger.Printf("No acknowledged incidents assigned found")
-				}
-
-				tui.Pages.SwitchToPage(AckIncidentsPageTitle)
-			}
 
 			if event.Rune() == '2' {
 				utils.InfoLogger.Print("Switching to incidents view")
@@ -198,7 +187,7 @@ func (tui *TUI) setupAlertsPageInput() {
 				tui.SeedAlertsUI()
 			}
 
-			// Alerts refresh
+			// Kite Logs
 			if event.Rune() == 'l' || event.Rune() == 'L' {
 				utils.InfoLogger.Print("Switching to Logs...")
 				tui.fetchKiteLogs()
@@ -260,6 +249,22 @@ func (tui *TUI) setupIncidentsPageInput() {
 					FooterText := fmt.Sprintf("Press 'Y' to log into the cluster: %s | Press 'S' to view the SOP | Press 'L' to view service logs | [Esc] Go Back", clusterName)
 					tui.Footer.SetText(FooterText)
 				}
+			}
+			// Move to Ack Incidents
+			if event.Rune() == '1' {
+				utils.InfoLogger.Print("Switching to acknowledged incidents view")
+				tui.SeedAckIncidentsUI()
+
+				if len(tui.Incidents) == 0 {
+					utils.InfoLogger.Printf("No acknowledged incidents assigned found")
+				}
+
+				tui.Pages.SwitchToPage(AckIncidentsPageTitle)
+			}
+			// Kite Logs
+			if event.Rune() == 'l' || event.Rune() == 'L' {
+				utils.InfoLogger.Print("Switching to Logs...")
+				tui.fetchKiteLogs()
 			}
 			return event
 		})

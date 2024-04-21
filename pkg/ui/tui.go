@@ -87,7 +87,7 @@ func (tui *TUI) InitAlertsUI(alerts []pdcli.Alert, tableTitle string, pageTitle 
 func (tui *TUI) InitIncidentsUI(incidents [][]string, tableTitle string, pageTitle string, isAckTable bool) {
 	incidentHeaders := []string{"INCIDENT ID", "NAME", "SEVERITY", "STATUS", "SERVICE", "ASSIGNED TO"}
 
-	if isAckTable {
+	if !isAckTable {
 		tui.IncidentsTable = tui.InitTable(incidentHeaders, incidents, true, true, tableTitle)
 		tui.SetIncidentsTableEvents()
 	} else {
@@ -115,8 +115,8 @@ func (t *TUI) initFooter() {
 	name, _ := t.Pages.GetFrontPage()
 
 	switch name {
-	case AlertsPageTitle:
-		t.Footer.SetText(FooterTextAlerts).SetTextColor(PromptTextColor)
+	case AckIncidentsPageTitle:
+		t.Footer.SetText(FooterTextAckIncidents).SetTextColor(PromptTextColor)
 
 	default:
 		t.Footer.SetText(FooterText).SetTextColor(PromptTextColor)
