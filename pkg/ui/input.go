@@ -35,7 +35,6 @@ func (tui *TUI) initKeyboard() {
 		if event.Key() == tcell.KeyEscape {
 			// Check if alerts command is executed
 			if tui.Pages.HasPage(AckIncidentsPageTitle) {
-				// tui.InitAlertsSecondaryView()
 				page, _ := tui.Pages.GetFrontPage()
 
 				// Handle page traversal
@@ -45,7 +44,6 @@ func (tui *TUI) initKeyboard() {
 					tui.Footer.SetText(FooterTextAlerts)
 				case ServiceLogsPageTitle:
 					tui.Pages.SwitchToPage(AlertDataPageTitle)
-					// tui.InitAlertDataSecondaryView()
 				case AlertMetadata:
 					tui.Pages.SwitchToPage(IncidentsPageTitle)
 					tui.Footer.SetText(FooterTextAlerts)
@@ -105,47 +103,6 @@ func (tui *TUI) initKeyboard() {
 			tui.TerminalInputBuffer = []rune{}
 			return nil
 		}
-		// } else if event.Key() == tcell.KeyBackspace || event.Key() == tcell.KeyBackspace2 {
-		// 	if len(tui.TerminalInputBuffer) > 0 {
-		// 		if CursorPos > 0 {
-		// 			tui.TerminalInputBuffer = append(tui.TerminalInputBuffer[:CursorPos-1], tui.TerminalInputBuffer[CursorPos:]...)
-		// 			CursorPos--
-		// 		} else {
-		// 			tui.TerminalInputBuffer = tui.TerminalInputBuffer[:len(tui.TerminalInputBuffer)-1]
-		// 		}
-		// 	}
-		// 	if len(tui.TerminalLastChars) > len("exit") {
-		// 		tui.TerminalLastChars = tui.TerminalLastChars[len(tui.TerminalLastChars)-len("exit"):]
-		// 	}
-		// 	// Working on the input buffer
-		// } else if event.Key() == tcell.KeyRune {
-		// 	if CursorPos >= len(tui.TerminalInputBuffer) {
-		// 		// Append new rune to end of input buffer
-		// 		tui.TerminalInputBuffer = append(tui.TerminalInputBuffer, event.Rune())
-		// 		tui.TerminalLastChars = append(tui.TerminalLastChars, event.Rune())
-		// 		if len(tui.TerminalLastChars) > len("exit") {
-		// 			tui.TerminalLastChars = tui.TerminalLastChars[1:]
-		// 		}
-		// 	} else {
-		// 		// Insert new rune at cursor position in input buffer
-		// 		tui.TerminalInputBuffer = append(tui.TerminalInputBuffer[:CursorPos], append([]rune{event.Rune()}, tui.TerminalInputBuffer[CursorPos:]...)...)
-		// 		tui.TerminalLastChars = append(tui.TerminalLastChars[:CursorPos], append([]rune{event.Rune()}, tui.TerminalLastChars[CursorPos:]...)...)
-		// 		if len(tui.TerminalLastChars) > len("exit") {
-		// 			tui.TerminalLastChars = tui.TerminalLastChars[1:]
-		// 		}
-		// 	}
-		// 	CursorPos++
-
-		// } else if event.Key() == tcell.KeyEnter {
-		// 	if string(tui.TerminalInputBuffer) == "exit" || string(tui.TerminalLastChars) == "exit" {
-		// 		slideNum, _ := strconv.Atoi(tui.TerminalPageBar.GetHighlights()[0])
-		// 		RemoveSlide(slideNum, tui)
-		// 	}
-		// 	tui.TerminalInputBuffer = []rune{}
-		// 	tui.TerminalLastChars = []rune{}
-		// 	CursorPos = 0
-		// }
-
 		// Override the default exit behaviour with Ctrl+C
 		if event.Key() == tcell.KeyCtrlC {
 			return nil
@@ -254,12 +211,9 @@ func (tui *TUI) setupIncidentsPageInput() {
 			if event.Rune() == '1' {
 				utils.InfoLogger.Print("Switching to acknowledged incidents view")
 				tui.SeedAckIncidentsUI()
-
 				if len(tui.Incidents) == 0 {
 					utils.InfoLogger.Printf("No acknowledged incidents assigned found")
 				}
-
-				tui.Pages.SwitchToPage(AckIncidentsPageTitle)
 			}
 			// Kite Logs
 			if event.Rune() == 'l' || event.Rune() == 'L' {

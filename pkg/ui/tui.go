@@ -100,6 +100,21 @@ func (tui *TUI) InitIncidentsUI(incidents [][]string, tableTitle string, pageTit
 	}
 }
 
+func (tui *TUI) InitEmptyIncidentsView(tableTitle string, pageTitle string) {
+	// Create a TextView
+	text := tview.NewTextView().
+		SetText("No Incidents! No news is good news").
+		SetTextAlign(tview.AlignCenter)
+	text.SetDrawFunc(func(screen tcell.Screen, x, y, w, h int) (int, int, int, int) {
+		y += h / 2
+		return x, y, w, h
+	}).SetBorder(true).SetTitle(tableTitle)
+
+	if !tui.Pages.HasPage(pageTitle) {
+		tui.Pages.AddPage(pageTitle, text, true, false)
+	}
+}
+
 // TODO: Move this to new Footer + Help Combined
 // func (tui *TUI) InitOnCallSecondaryView(user string, primary string, secondary string) {
 // 	tui.SecondaryWindow.SetText(

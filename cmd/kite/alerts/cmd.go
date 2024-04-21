@@ -70,8 +70,6 @@ func init() {
 func alertsHandler(cmd *cobra.Command, args []string) error {
 	var (
 		// Internals
-		// incidentAlerts []pdcli.Alert
-		// alerts         []pdcli.Alert
 		incidentID   string
 		incidentOpts pdApi.ListIncidentsOptions
 		teams        []string
@@ -212,39 +210,10 @@ func alertsHandler(cmd *cobra.Command, args []string) error {
 	incidentOpts.Limit = constants.IncidentsLimit
 	tui.IncidentOpts = incidentOpts
 	tui.SeedAckIncidentsUI()
-	// // Fetch incidents
-	// utils.InfoLogger.Printf("GET: fetching incidents")
-	// incidents, err := pdcli.GetIncidents(client, &incidentOpts)
 
-	// if err != nil {
-	// 	return err
-	// }
-
-	// // Get incident alerts
-	// utils.InfoLogger.Printf("GET: fetching incident alerts")
-	// for _, incident := range incidents {
-	// 	// An incident can have more than one alert
-	// 	incidentAlerts, err = pdcli.GetIncidentAlerts(client, incident)
-
-	// 	if err != nil {
-	// 		return err
-	// 	}
-
-	// 	alerts = append(alerts, incidentAlerts...)
-	// }
-
-	// tui.Alerts = alerts
-	// tui.IncidentOpts = incidentOpts
-
-	// tui.InitAlertsUI(tui.Alerts, ui.AlertsTableTitle, ui.AlertsPageTitle)
-	// tui.InitAlertsSecondaryView()
-	// tui.InitAlertsUI(tui.Alerts, ui.AlertsTableTitle, ui.AlertsPageTitle)
-	// tui.InitAlertsSecondaryView()
 	// Start TUI
 	fmt.Println("Starting UI...")
 
-	x := ""
-	fmt.Scanf(x)
 	err = tui.StartApp()
 
 	if err != nil {

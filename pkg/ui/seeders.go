@@ -29,10 +29,13 @@ func (tui *TUI) SeedAckIncidentsUI() {
 	}
 
 	tui.Incidents = ackIncidents
-
-	tui.InitIncidentsUI(tui.Incidents, AckIncidentsTableTitle, AckIncidentsPageTitle, false)
-	tui.Footer.SetText(FooterTextTrigerredAlerts)
+	if len(tui.Incidents) == 0 {
+		tui.InitEmptyIncidentsView(AckIncidentsTableTitle, AckIncidentsPageTitle)
+	} else {
+		tui.InitIncidentsUI(tui.Incidents, AckIncidentsTableTitle, AckIncidentsPageTitle, false)
+	}
 	tui.Pages.SwitchToPage(AckIncidentsPageTitle)
+	tui.Footer.SetText(FooterTextTrigerredAlerts)
 }
 
 // SeedIncidentsUI fetches trigerred incidents and initializes a TUI table/page component.
@@ -60,10 +63,12 @@ func (tui *TUI) SeedIncidentsUI() {
 		incident := []string{i.APIObject.ID, i.Title, i.Urgency, i.Status, i.Service.Summary, assignment.Assignee.Summary}
 		incidentsData = append(incidentsData, incident)
 	}
-
 	tui.Incidents = incidentsData
-
-	tui.InitIncidentsUI(tui.Incidents, IncidentsTableTitle, IncidentsPageTitle, true)
+	if len(tui.Incidents) == 0 {
+		tui.InitEmptyIncidentsView(IncidentsTableTitle, IncidentsPageTitle)
+	} else {
+		tui.InitIncidentsUI(tui.Incidents, IncidentsTableTitle, IncidentsPageTitle, true)
+	}
 	tui.Footer.SetText(FooterTextIncidents)
 }
 
